@@ -20,4 +20,9 @@ def inicio():
 
 @app.get("/health")
 def health_check():
-    return {"estado": "ok"}
+    return {
+        "estado": "ok",
+        "backend": "FastAPI funcionando",
+        "desarrollador": "William Vasquez",
+        "version": "1.0"
+    }
