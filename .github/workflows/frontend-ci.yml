@@ -31,4 +31,3 @@ jobs:
       - name: Test
         working-directory: frontend/frontend1
         run: npm run test
-
