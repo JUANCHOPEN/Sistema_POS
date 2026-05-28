@@ -28,11 +28,13 @@ class ProductoCreate(BaseModel):
     stock_minimo: int = 5
 
 class ProductoUpdate(BaseModel):
+    id_categoria: Optional[int]   = None
+    codigo:       Optional[str]   = None
     nombre:       Optional[str]   = None
     precio_venta: Optional[float] = None
     precio_costo: Optional[float] = None
+    stock_actual: Optional[int]   = None
     stock_minimo: Optional[int]   = None
-    id_categoria: Optional[int]   = None
     activo:       Optional[bool]  = None
 
 class ProductoResponse(BaseModel):
