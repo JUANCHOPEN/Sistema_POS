@@ -185,3 +185,38 @@ npm run test
 La ruta configurada para el frontend es:
 
 frontend/frontend1
+
+
+## Validación de build y pruebas del frontend
+
+Para validar el frontend de forma local, entrar a la carpeta del frontend:
+powershell
+cd "\frontend\frontend1"
+
+npm install
+Resultado esperado:
+vite build ejecutado correctamente
+carpeta dist generada
+sin errores de compilación
+
+Ejecutar pruebas unitarias:
+npm run test
+Resultado esperado:
+
+Test Files 1 passed
+Tests 4 passed
+Coverage report generado
+
+
+El pipeline de GitHub Actions ejecuta estas mismas validaciones desde el archivo:
+
+.github/workflows/frontend-ci.yml
+El pipeline valida la ruta del frontend:
+
+frontend/frontend1
+
+Comandos principales del pipeline:
+
+npm ci
+npm run build
+npm run test
