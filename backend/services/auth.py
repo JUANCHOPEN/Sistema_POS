@@ -11,9 +11,9 @@ import os
 load_dotenv()
 
 # Configuración
-SECRET_KEY              = os.getenv("SECRET_KEY")
-ALGORITHM               = os.getenv("ALGORITHM")
-TOKEN_EXPIRE_MINUTES    = int(os.getenv("TOKEN_EXPIRE_MINUTES"))
+SECRET_KEY = os.getenv("SECRET_KEY") or "test-secret-key"
+ALGORITHM = os.getenv("ALGORITHM") or "HS256"
+TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES") or 60)
 MAX_INTENTOS_FALLIDOS   = 5
 
 # Configuración de bcrypt
