@@ -74,3 +74,14 @@ class ProductoRepository:
           .update(datos)
         db.commit()
         return self.obtener_por_id(db, id_producto)
+
+    def eliminar(self, db: Session, id_producto: int):
+        producto = self.obtener_por_id(db, id_producto)
+
+        if not producto:
+            return None
+
+        producto.activo = False
+        db.commit()
+        db.refresh(producto)
+        return producto

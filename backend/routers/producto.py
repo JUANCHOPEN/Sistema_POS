@@ -60,3 +60,14 @@ def actualizar_producto(
     if error:
         raise HTTPException(status_code=404, detail=error)
     return producto
+@router.delete("/{id_producto}")
+def eliminar_producto(id_producto: int, db: Session = Depends(get_db)):
+    producto, error = producto_service.eliminar(db, id_producto)
+
+    if error:
+        raise HTTPException(status_code=404, detail=error)
+
+    return {
+        "mensaje": "Producto eliminado correctamente",
+        "id_producto": id_producto
+    }

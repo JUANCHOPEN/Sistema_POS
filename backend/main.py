@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import verificar_conexion
-from routers import auth, producto
+from routers import auth, producto, venta
 
 app = FastAPI(
     title="Sistema POS",
@@ -25,6 +25,7 @@ app.add_middleware(
 verificar_conexion()
 
 app.include_router(auth.router)
+app.include_router(venta.router)
 app.include_router(producto.router)
 
 @app.get("/")
@@ -33,4 +34,9 @@ def inicio():
 
 @app.get("/health")
 def health_check():
-    return {"estado": "ok"}
+    return {
+        "estado": "ok",
+        "backend": "FastAPI funcionando",
+        "desarrollador": "William Vasquez",        "version": "1.0"
+    }
+from routers import auth, producto
