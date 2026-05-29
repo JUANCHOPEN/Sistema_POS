@@ -76,9 +76,9 @@ admin@pos.gt
 
 Contraseña:
 
-admin123
+Admin123
 
-Cajero
+Cajero: pendiente de crear para pruebas
 
 Correo:
 
