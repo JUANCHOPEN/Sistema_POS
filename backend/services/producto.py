@@ -69,3 +69,12 @@ class ProductoService:
                    if v is not None}
 
         return producto_repo.actualizar(db, id_producto, cambios), None
+              
+
+    def eliminar(self, db: Session, id_producto: int):
+        producto = producto_repo.obtener_por_id(db, id_producto)
+
+        if not producto:
+            return None, "Producto no encontrado"
+
+        return producto_repo.eliminar(db, id_producto), None
