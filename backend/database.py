@@ -2,32 +2,36 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
+from urllib.parse import quote_plus
 import os
 
-# Cargar variables del archivo .env
 load_dotenv()
 
-# Datos de conexión
-SERVER   = os.getenv("DATABASE_SERVER")
+SERVER = os.getenv("DATABASE_SERVER")
 DATABASE = os.getenv("DATABASE_NAME")
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_DRIVER = os.getenv("DATABASE_DRIVER", "ODBC Driver 18 for SQL Server")
 
-# Cadena de conexión a SQL Server con autenticación de Windows
-CONNECTION_STRING = (
-    f"mssql+pyodbc://{SERVER}/{DATABASE}"
-    f"?driver=ODBC+Driver+17+for+SQL+Server"
-    f"&trusted_connection=yes"
+connection_url = (
+    f"DRIVER={{{DATABASE_DRIVER}}};"
+    f"SERVER={SERVER},1433;"
+    f"DATABASE={DATABASE};"
+    f"UID={DATABASE_USER};"
+    f"PWD={DATABASE_PASSWORD};"
+    f"Encrypt=yes;"
+    f"TrustServerCertificate=no;"
+    f"Connection Timeout=30;"
 )
 
-# Crear el motor de conexión
+CONNECTION_STRING = f"mssql+pyodbc:///?odbc_connect={quote_plus(connection_url)}"
+
 engine = create_engine(CONNECTION_STRING)
 
-# Crear sesión para interactuar con la base de datos
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Base para los modelos
 Base = declarative_base()
 
-# Función para obtener la sesión de base de datos
 def get_db():
     db = SessionLocal()
     try:
@@ -35,11 +39,10 @@ def get_db():
     finally:
         db.close()
 
-# Función para verificar la conexión
 def verificar_conexion():
     try:
         with engine.connect() as conexion:
             conexion.execute(text("SELECT 1"))
-            print("✅ Conexión a SQL Server exitosa")
+            print("Conexion a Azure SQL exitosa")
     except Exception as e:
-        print(f"❌ Error de conexión: {e}")
+        print(f"Error de conexion a Azure SQL: {e}")
