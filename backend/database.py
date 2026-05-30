@@ -20,7 +20,7 @@ connection_url = (
     f"UID={DATABASE_USER};"
     f"PWD={DATABASE_PASSWORD};"
     f"Encrypt=yes;"
-    f"TrustServerCertificate=no;"
+    f"TrustServerCertificate=yes;"
     f"Connection Timeout=30;"
 )
 
