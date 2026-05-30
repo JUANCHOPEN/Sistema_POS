@@ -8,19 +8,31 @@ import os
 load_dotenv()
 
 # Datos de conexión
-SERVER   = os.getenv("DATABASE_SERVER")
-DATABASE = os.getenv("DATABASE_NAME")
+# Cargar variables del archivo .env (solo sirve en local)
+load_dotenv()
 
-# Cadena de conexión a SQL Server con autenticación de Windows
-CONNECTION_STRING = (
-    f"mssql+pyodbc://{SERVER}/{DATABASE}"
-    f"?driver=ODBC+Driver+17+for+SQL+Server"
-    f"&trusted_connection=yes"
-)
+# 1. Intentamos leer la variable 'DATABASE_URL' que configuraremos en Render de forma secreta
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-# Crear el motor de conexión
-engine = create_engine(CONNECTION_STRING)
-
+if DATABASE_URL:
+    # Corrección obligatoria: Render/PostgreSQL exige que la cadena empiece con 'postgresql://' y no 'postgres://'
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    
+    # Si detecta la URL de la nube, creamos el motor para PostgreSQL
+    engine = create_engine(DATABASE_URL)
+else:
+    # 2. Si no existe DATABASE_URL (significa que estás corriendo el código en tu computadora local)
+    # Mantiene tu configuración original de SQL Server
+    SERVER   = os.getenv("DATABASE_SERVER")
+    DATABASE = os.getenv("DATABASE_NAME")
+    
+    CONNECTION_STRING = (
+        f"mssql+pyodbc://{SERVER}/{DATABASE}"
+        f"?driver=ODBC+Driver+17+for+SQL+Server"
+        f"&trusted_connection=yes"
+    )
+    engine = create_engine(CONNECTION_STRING)
 # Crear sesión para interactuar con la base de datos
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
